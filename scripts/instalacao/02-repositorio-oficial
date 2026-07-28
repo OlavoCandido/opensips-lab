@@ -1,0 +1,29 @@
+#!/bin/bash
+# Adicionar repositório oficial OpenSIPS para Debian
+
+# Detectar versão do SO
+. /etc/os-release
+DISTRO=${ID} # debian ou ubuntu
+CODENAME=${VERSION_CODENAME} # bookworm, jammy, etc.
+OPENSIPS_VERSION="3.6"
+
+# Instalar chave GPG
+curl -sSL https://apt.opensips.org/opensips-org.gpg \
+-o /usr/share/keyrings/opensips-org.gpg
+
+# Adicionar repositório
+cat > /etc/apt/sources.list.d/opensips.list <<EOF
+deb [signed-by=/usr/share/keyrings/opensips-org.gpg] \
+https://apt.opensips.org ${CODENAME} ${OPENSIPS_VERSION}-releases
+EOF
+
+cat > /etc/apt/sources.list.d/opensips-cli.list <<EOF
+deb [signed-by=/usr/share/keyrings/opensips-org.gpg] https://apt.opensips.org ${CODENAME} cli-nightly
+EOF
+
+# Atualizar lista de pacotes
+apt-get update
+
+# Listar pacotes OpenSIPS disponíveis
+apt-cache search opensips | head -20
+echo "Repositório OpenSIPS ${OPENSIPS_VERSION} adicionado para ${DISTRO}/${CODENAME}"

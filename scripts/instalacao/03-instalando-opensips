@@ -1,0 +1,26 @@
+#!/bin/bash
+set -euo pipefail
+
+# Instalação do OpenSIPS 3.6 via pacotes Debian
+
+# Pacote principal (já instalado, mas mantido por idempotência)
+apt-get install -y opensips
+
+# Módulos essenciais para o lab
+apt-get install -y \
+  opensips-postgres-module \
+  opensips-redis-module \
+  opensips-tls-module \
+  opensips-http-modules \
+  opensips-json-module \
+  opensips-prometheus-module \
+  opensips-rabbitmq-modules \
+  opensips-presence-modules
+
+# opensips-cli (ferramenta de gestão) — via pacote apt, NÃO via pip
+apt-get install -y opensips-cli
+
+echo "Instalação concluída."
+opensips -V | head -5
+echo "---"
+opensips-cli -v 2>&1 || echo "opensips-cli: verificar instalação"

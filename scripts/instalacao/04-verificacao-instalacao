@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Verificar instalação do OpenSIPS
+echo "=== Verificação pós-instalação ==="
+
+# Versão instalada
+opensips -V
+echo ""
+
+# Módulos disponíveis
+echo "=== Módulos instalados ==="
+ls /usr/lib/x86_64-linux-gnu/opensips/modules/*.so | wc -l
+echo "módulos encontrados"
+
+# Arquivos de configuração
+echo "=== Arquivos de config ==="
+ls -la /etc/opensips/
+
+# Verificar serviço
+echo "=== Status do serviço ==="
+systemctl status opensips --no-pager -l 2>/dev/null || echo "Serviço não
+iniciado"
+
+# Testar config padrão
+opensips -C -f /etc/opensips/opensips.cfg && echo "Config OK" || echo "Config com
+ERROS"
