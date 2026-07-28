@@ -1,0 +1,6 @@
+*.pid
+*.log
+*.pcap
+core
+*_secret*
+opensips.cfg.local
